@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone')->nullable();  // optional for contact
+            $table->string('role')->default('customer'); // admin, washer, etc.
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
