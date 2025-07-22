@@ -14,22 +14,6 @@ class UserController extends Controller
         return User::all();
     }
 
-    // Create a new user
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'phone' => 'nullable|string',
-            'role' => 'required|string',
-            'password' => 'required|min:6',
-        ]);
-
-        $validated['password'] = Hash::make($validated['password']);
-
-        $user = User::create($validated);
-        return response()->json($user, 201);
-    }
 
     // Show a single user
     public function show($id)

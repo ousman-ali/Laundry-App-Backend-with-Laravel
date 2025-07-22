@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('stock')->default(0);
-            $table->integer('min_stock')->default(0);
-            $table->decimal('unit_price', 10, 2)->default(0.00);
-            $table->string('unit'); // e.g., pcs, kg, L
+            $table->string('name'); // Name of the item
+            $table->integer('stock')->default(0); // Current stock
+            $table->integer('min_stock')->default(0); // Minimum threshold for alert
+            $table->decimal('unit_price', 10, 2); // Price per unit
+            $table->string('unit'); // e.g., kg, piece
             $table->timestamps();
         });
     }
