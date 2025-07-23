@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -52,15 +53,25 @@ class UserController extends Controller
     }
 
     //assigning roles method
-    public function assignRoles(Request $request, User $user)
+    public function assignRoles(Request $request, $id)
     {
         $request->validate([
             'roles' => 'required|array',
         ]);
 
-        $user->syncRoles($request->roles);
+        $user = User::find($id);
 
-        return response()->json($user->load('roles'));
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $user->syncRoles($request->roles); // e.g. ['admin']
+
+        return response()->json([
+            'user' => $user->load('roles'),
+            'roles_assigned' => $request->roles,
+            'model_has_roles' => DB::table('model_has_roles')->where('model_id', $user->id)->get(),
+        ]);
     }
 
     //Get a user by role 
