@@ -30,7 +30,6 @@ class UserController extends Controller
             'name' => 'sometimes|string',
             'email' => 'sometimes|email|unique:users,email,' . $user->id,
             'phone' => 'nullable|string',
-            'role' => 'sometimes|string',
             'password' => 'nullable|min:6',
         ]);
 
@@ -51,4 +50,34 @@ class UserController extends Controller
 
         return response()->json(['message' => 'User deleted successfully']);
     }
+
+    //assigning roles method
+    public function assignRoles(Request $request, User $user)
+    {
+        $request->validate([
+            'roles' => 'required|array',
+        ]);
+
+        $user->syncRoles($request->roles);
+
+        return response()->json($user->load('roles'));
+    }
+
+    //Get a user by role 
+    public function getByRole($roleName)
+    {
+        $role = Role::where('name', $roleName)->first();
+
+        if (!$role) {
+            return response()->json(['message' => 'Role not found'], 404);
+        }
+
+        $users = User::role($roleName)->get(); // This is provided by Spatie
+
+        return response()->json([
+            'role' => $roleName,
+            'users' => $users
+        ]);
+    }
+
 }
