@@ -52,11 +52,11 @@ use App\Http\Controllers\RoleController;
 
     //role and permission routes
     Route::middleware('auth:api')->group(function () {
-        Route::get('/permissions/all', [RoleController::class, 'permissions']); // List all permissions
-        Route::get('/roles/all', [RoleController::class, 'index']); // List roles
-        Route::post('/roles/create', [RoleController::class, 'store']); // Create role + assign permissions
-        Route::put('/roles/update/{role}', [RoleController::class, 'update']); // Update role + permissions
-        Route::delete('/roles/delete/{role}', [RoleController::class, 'destroy']); // Delete role
+        Route::get('/permissions/all', [RoleController::class, 'permissions'])->name('permissions.permissions'); // List all permissions
+        Route::get('/roles/all', [RoleController::class, 'index'])->name('roles.index'); // List roles
+        Route::post('/roles/create', [RoleController::class, 'store'])->name('roles.store'); // Create role + assign permissions
+        Route::put('/roles/update/{role}', [RoleController::class, 'update'])->name('roles.update'); // Update role + permissions
+        Route::delete('/roles/delete/{role}', [RoleController::class, 'destroy'])->name('roles.destroy'); // Delete role
     });
 
 
